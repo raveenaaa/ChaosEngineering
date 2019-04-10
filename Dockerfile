@@ -7,7 +7,7 @@ RUN apt-get install -y build-essential git vim curl
 RUN curl -sL https://deb.nodesource.com/setup_9.x | bash -
 RUN apt-get install -y nodejs
 # Networking tools
-RUN apt-get install iproute2
+RUN apt-get install -y iproute2
 
 # Cat facts server
 COPY . /srv
