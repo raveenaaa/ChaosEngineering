@@ -8,8 +8,11 @@ while true;
 done
 EOF
 
+# Make executable
+chmod +x /tmp/infiniteburn.sh
+
 #Will cause a ton of chaos! 
-for i in {1..32}
+for i in $(seq 1 32);
 do
     nohup /bin/bash /tmp/infiniteburn.sh &
 done
