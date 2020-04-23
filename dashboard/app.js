@@ -4,6 +4,10 @@ const favicon = require('serve-favicon');
 const path = require('path');
 const app = express();
 
+const metrics = require('./metrics/index');
+
+metrics.startDashboard(app);
+
 app.use(express.static(path.join(__dirname, 'www')));
 
 app.use(favicon(path.join(__dirname,'www','ninlabs.svg')));

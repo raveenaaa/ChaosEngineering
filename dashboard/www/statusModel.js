@@ -1,5 +1,6 @@
 let SidebarMenu = window["vue-sidebar-menu"].SidebarMenu;
 
+
 $(document).ready(function()
 {
   console.log('On ready...')
@@ -33,6 +34,21 @@ $(document).ready(function()
     data: {
       foo: "hello",
     }
+  });
+
+
+  const host = `${window.location.hostname}:3050`;
+  console.log(`Connecting to ${host}`);
+  var socket = io.connect(host, {
+      upgrade: false,
+      transports: ['websocket']
+  });
+  
+  console.log(socket);
+
+  socket.on("heartbeat", function(heartbeat) 
+  {
+      console.log(JSON.stringify(heartbeat));
   });
 
 
