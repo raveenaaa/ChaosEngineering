@@ -157,8 +157,8 @@ function linechart()
             },
             {
               label: 'Canary (Green)',
-              borderColor: 'rgba(56, 255, 96, 0.5)',
-              backgroundColor: 'rgba(56, 255, 96, 0.1)',
+              borderColor: 'rgba(96, 220, 56, 0.5)',
+              backgroundColor: 'rgba(96, 220, 56, 0.1)',
               data: this.greenChartData,
             }
           ]
