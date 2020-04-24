@@ -35,7 +35,16 @@ function startDashboard(app)
 					});
 					if( resp )
 					{
-						server.stat = resp.body;
+						let bodyParts = resp.body.trim().split('\n');
+						body = `[${bodyParts.join(",")}]`;
+						//body = body.replace(/\\"/g, '"');
+
+						server.stat = JSON.parse(body);
+						for( var client of server.stat)
+						{
+							client.status = "#00ff00";
+						}
+						console.log(server);
 					}
                 }
 

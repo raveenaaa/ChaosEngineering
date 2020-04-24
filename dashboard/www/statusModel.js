@@ -5,7 +5,6 @@ $(document).ready(function()
 {
   console.log('On ready...')
 
-  linechart();
   menu();
 
   let vm = new Vue({
@@ -22,20 +21,40 @@ $(document).ready(function()
       }
     },  
     data: {
-      foo: "hello",
       menu: menuValues,
       collapsed:false,
       selectedTheme:"white-theme"
     }
   });
 
-  let vm2 = new Vue({
-    el: '.chart',
-    data: {
-      foo: "hello",
+  var blueclients = [];
+  let bluestatusBars = new Vue({
+    el: "#blueStatusColors",
+    data: function data(){
+        return {clients: blueclients};
     }
   });
 
+  var greenclients = [];
+  let greenstatusBars = new Vue({
+    el: "#greenStatusColors",
+    data: function data(){
+        return {clients: greenclients};
+    }
+  });
+
+  linechart();
+  // let greenData = [0];
+  // let blueData = [0];
+  let vm2 = new Vue({
+    el: '.chart',
+    data: {
+      blueChartData: [{x: new Date(), y: 0}],
+      greenChartData: [{x: new Date(), y: 0}],
+    },  
+  });
+  // var chart = vm2.$refs.linechart;
+  // console.log(chart)
 
   const host = `${window.location.hostname}:3050`;
   console.log(`Connecting to ${host}`);
@@ -44,11 +63,44 @@ $(document).ready(function()
       transports: ['websocket']
   });
   
-  console.log(socket);
+ 
 
   socket.on("heartbeat", function(heartbeat) 
   {
-      console.log(JSON.stringify(heartbeat));
+      // console.log(JSON.stringify(heartbeat));
+
+      for( var server of heartbeat )
+      {
+        if( server.name == "blue")
+        {
+          bluestatusBars.clients = server.stat;
+
+          let sum = 0;
+          for ( var container of server.stat )
+          {
+            sum+=parseFloat(container.CPUPerc);
+          }
+          // console.log(sum);
+          vm2.blueChartData.push( {x: new Date(), y: sum / 3.0});
+        }
+        else{
+          greenstatusBars.clients = server.stat;
+
+          let sum = 0;
+          for ( var container of server.stat )
+          {
+            sum+=parseFloat(container.CPUPerc);
+          }
+          // console.log(sum);
+
+          vm2.greenChartData.push( {x: new Date(), y: sum / 3.0});
+        }
+      }
+
+      // vm2.greenChartData = greenData;
+      // vm2.blueChartData = blueData;
+
+      //console.log(greenData);
   });
 
 
@@ -72,39 +124,62 @@ const menuValues = [
   }
 ];
 
-// Key the datasets by year for easy access.
-const datasets = [
-  {
-    label: '2018 Sales',
-    borderColor: 'rgba(50, 115, 220, 0.5)',
-    backgroundColor: 'rgba(50, 115, 220, 0.1)',
-    data: [300, 700, 450, 750, 450]
-  },
-  {
-    label: '2017 Sales',
-    borderColor: 'rgba(255, 56, 96, 0.5)',
-    backgroundColor: 'rgba(255, 56, 96, 0.1)',
-    data: [600, 550, 750, 250, 700]
-  }
-];
-
 function linechart()
 {
-  Vue.component('line-chart', {
+  return Vue.component('line-chart', {
     extends: VueChartJs.Line,
+    props: ["bluedata", "greendata"],
+    computed: {
+      greenChartData: function() {
+        return this.greendata;
+      },
+      blueChartData: function() {
+        return this.bluedata;
+      }
+    },
     mounted () {
       console.log('mounted...');
-      this.renderChart({
-        labels: ['January', 'February', 'March', 'April', 'May'],
-        datasets: datasets
-      }, {responsive: true, maintainAspectRatio: false})
+      this.renderLineChart();
+    },
+    methods: {
+      renderLineChart: function() {
+        this.renderChart({
+          labels: ['January', 'February', 'March', 'April', 'May'],
+          datasets: [
+            {
+              label: 'Control (Blue)',
+              borderColor: 'rgba(50, 115, 220, 0.5)',
+              backgroundColor: 'rgba(50, 115, 220, 0.1)',
+              data: this.blueChartData,
+            },
+            {
+              label: 'Canary (Green)',
+              borderColor: 'rgba(255, 56, 96, 0.5)',
+              backgroundColor: 'rgba(255, 56, 96, 0.1)',
+              data: this.greenChartData,
+            }
+          ]
+        }, {responsive: true, maintainAspectRatio: false})  
+      }
+    }, 
+    watch: {
+      bluedata: function() {
+        // this._chart.destroy();
+        //this.renderChart(this.data, this.options);
+        this.renderLineChart();
+      },
+      greendata: function() {
+        // this._chart.destroy();
+        //this.renderChart(this.data, this.options);
+        this.renderLineChart();
+      }
     }
   })  
 }
 
 function menu()
 {
-  Vue.component('sidebar-menu', {
+  return Vue.component('sidebar-menu', {
     extends: SidebarMenu 
   });
 }

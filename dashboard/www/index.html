@@ -35,6 +35,16 @@
       .demo {
         padding: 50px;
       }
+
+    .serverBox {   
+        float: left;
+        width: 20px;
+        height: 20px;
+        margin: 5px;
+        border-width: 1px;
+        border-style: solid;
+        border-color: rgba(0,0,0,.2);
+    }
     </style>
 
   </head>
@@ -44,15 +54,30 @@
         <sidebar-menu :menu="menu" :show-one-child="true" :collapsed="collapsed" :hide-toggle="true"/>
       </div>
 
+      <h2 class="title is-5">Blue Control</h2>
+
+      <div id="blueStatusColors">
+        <div v-for="client in clients">
+          <span class="serverBox" v-bind:style="{backgroundColor: client.status}"></span>
+        </div>
+      </div>
+      <br/><br/>
+
+      <h2 class="title is-5">Green Canary</h2>
+
+      <div id="greenStatusColors">
+        <div v-for="client in clients">
+          <span class="serverBox" v-bind:style="{backgroundColor: client.status}"></span>
+        </div>
+      </div>
+      <br/><br/>
+
       <div class="chart">
         <h2 class="title is-5">Line Chart</h2>
-        <div id="lefoo">
-          <p>{{foo}}</p>
-        </div>
 
         <section class="section">
           <div class="container">
-            <line-chart></line-chart>
+            <line-chart :bluedata="blueChartData" :greendata="greenChartData" ref="linechart"></line-chart>
           </div>
         </section>
 
