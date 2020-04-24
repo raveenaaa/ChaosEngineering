@@ -35,16 +35,22 @@ function startDashboard(app)
 					});
 					if( resp )
 					{
-						let bodyParts = resp.body.trim().split('\n');
-						body = `[${bodyParts.join(",")}]`;
-						//body = body.replace(/\\"/g, '"');
+						server.stat = JSON.parse(resp.body);
 
-						server.stat = JSON.parse(body);
 						for( var client of server.stat)
 						{
+							// calculate timing
+							if( client.timings.length == 0 )
+							{
+								client.latency = 0;
+							} else {
+								let sum = client.timings.reduce((a, b) => a + b)
+								client.latency = sum/client.timings.length;
+							}
+							console.log(`${server.name} ${client.timings}`);
 							client.status = "#00ff00";
 						}
-						console.log(server);
+						// console.log(server);
 					}
                 }
 

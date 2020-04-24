@@ -78,7 +78,7 @@ $(document).ready(function()
           let sum = 0;
           for ( var container of server.stat )
           {
-            sum+=parseFloat(container.CPUPerc);
+            sum+=parseFloat(container.latency);
           }
           // console.log(sum);
           vm2.blueChartData.push( {x: new Date(), y: sum / 3.0});
@@ -89,7 +89,7 @@ $(document).ready(function()
           let sum = 0;
           for ( var container of server.stat )
           {
-            sum+=parseFloat(container.CPUPerc);
+            sum+=parseFloat(container.latency);
           }
           // console.log(sum);
 
