@@ -8,7 +8,7 @@ const path = require('path');
 var servers = 
 [
     {name: 'blue', url: 'http://192.168.44.102:3080/health'},
-    {name: 'green', url: 'http://192.168.44.108:3080/health'},
+    {name: 'green', url: 'http://192.168.66.108:3080/health'},
 ];
 
 function startDashboard(app)
@@ -30,14 +30,15 @@ function startDashboard(app)
 			{
                 for (server of servers )
                 {
+					let captureServer = server;
                     let resp =await got(server.url, {timeout: 5000, throwHttpErrors: false}).catch( e => 
 					{
 					});
 					if( resp )
 					{
-						server.stat = JSON.parse(resp.body);
-
-						for( var client of server.stat)
+						captureServer.stat = JSON.parse(resp.body);
+						
+						for( var client of captureServer.stat)
 						{
 							// calculate timing
 							if( client.timings.length == 0 )
@@ -47,7 +48,7 @@ function startDashboard(app)
 								let sum = client.timings.reduce((a, b) => a + b)
 								client.latency = sum/client.timings.length;
 							}
-							console.log(`${server.name} ${client.timings}`);
+							console.log(`${captureServer.name} ${client.timings}`);
 							client.status = "#00ff00";
 						}
 						// console.log(server);

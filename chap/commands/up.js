@@ -44,11 +44,11 @@ async function run(privateKey) {
     spawnForeverProcess('vagrant@192.168.44.102');
 
     console.log(chalk.greenBright('Provisioning green canary server...'));
-    result = child.spawnSync(`bakerx`, `run --ip 192.168.44.108 --sync greencanary chaos`.split(' '), 
+    result = child.spawnSync(`bakerx`, `run --ip 192.168.66.108 --sync greencanary chaos`.split(' '), 
         {shell:true, stdio: 'inherit', cwd: path.join(__dirname, "../../chaos")} );
     if( result.error ) { console.log(result.error); process.exit( result.status ); }
 
-    spawnForeverProcess('vagrant@192.168.44.108');
+    spawnForeverProcess('vagrant@192.168.66.108');
 
 }
 
