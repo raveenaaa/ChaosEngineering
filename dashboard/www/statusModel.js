@@ -126,6 +126,9 @@ const menuValues = [
 
 function linechart()
 {
+  const START=1, END=100;
+  let labels = Array.from({length: END-START}, (x, i) => i+START);
+
   return Vue.component('line-chart', {
     extends: VueChartJs.Line,
     props: ["bluedata", "greendata"],
@@ -144,7 +147,7 @@ function linechart()
     methods: {
       renderLineChart: function() {
         this.renderChart({
-          labels: ['January', 'February', 'March', 'April', 'May'],
+          labels: labels,
           datasets: [
             {
               label: 'Control (Blue)',
@@ -154,8 +157,8 @@ function linechart()
             },
             {
               label: 'Canary (Green)',
-              borderColor: 'rgba(255, 56, 96, 0.5)',
-              backgroundColor: 'rgba(255, 56, 96, 0.1)',
+              borderColor: 'rgba(56, 255, 96, 0.5)',
+              backgroundColor: 'rgba(56, 255, 96, 0.1)',
               data: this.greenChartData,
             }
           ]
