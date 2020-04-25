@@ -73,6 +73,7 @@ $(document).ready(function()
       {
         if( server.name == "blue")
         {
+          blueclients = server.stat;
           bluestatusBars.clients = server.stat;
 
           let sum = 0;
@@ -84,6 +85,7 @@ $(document).ready(function()
           vm2.blueChartData.push( {x: new Date(), y: sum / 3.0});
         }
         else{
+          greenclients = server.stat;
           greenstatusBars.clients = server.stat;
 
           let sum = 0;

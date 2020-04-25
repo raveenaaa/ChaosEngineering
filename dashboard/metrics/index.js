@@ -48,10 +48,10 @@ function startDashboard(app)
 								let sum = client.timings.reduce((a, b) => a + b)
 								client.latency = sum/client.timings.length;
 							}
-							console.log(`${captureServer.name} ${client.timings}`);
-							client.status = "#00ff00";
+							// set overall status of node.
+							client.status =health(client);
 						}
-						// console.log(server);
+						console.log(captureServer);
 					}
                 }
 
@@ -67,5 +67,25 @@ function startDashboard(app)
     });
 
 }
+
+function health(client)
+{
+	let score = parseFloat(client.CPUPerc)/100.0 + 
+	parseFloat(client.MemPerc)/100.0 + 
+	(client.latency / 300.0);
+
+	console.log(`${client.Name}: ${score}`);
+
+	return score2color(1.0-(Math.min(score,4)/4.0));
+}
+
+function score2color(score)
+{
+	if (score <= 0.25) return "#ff0000";
+	if (score <= 0.50) return "#ffcc00";
+	if (score <= 0.75) return "#00cc00";
+	return "#00ff00";
+}
+
 
 module.exports.startDashboard = startDashboard;
