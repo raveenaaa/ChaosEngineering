@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 # Script for CPU  Chaos
 
 cat << EOF > /tmp/infiniteburn.sh
@@ -14,6 +14,6 @@ chmod +x /tmp/infiniteburn.sh
 #Will cause a ton of chaos! 
 for i in $(seq 1 32);
 do
-    nohup /bin/bash /tmp/infiniteburn.sh &
+    nohup /bin/sh /tmp/infiniteburn.sh &
 done
 
