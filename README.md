@@ -132,7 +132,7 @@ Now, induce load on the control server.
 
 You should see something like this:
 
-![cpu-burn](cpu-burn.png)
+![cpu-burn](img/cpu-burn.png)
 
 *What did we see*? We see a large increase in latency in green canary server, meaning client requests are taking much longer (and may be timing out).
 
