@@ -185,8 +185,9 @@ By default a Docker container allocates unlimited cpu and memory. Try limiting t
 ```
 --cpus=".5"
 -m 8m
-Most of these options take a positive integer, followed by a suffix of b, k, m, g, to indicate bytes, kilobytes, megabytes, or gigabytes.
 ```
+
+Most of these options take a positive integer, followed by a suffix of b, k, m, g, to indicate bytes, kilobytes, megabytes, or gigabytes.
 
 Notice anything interesting?
 
