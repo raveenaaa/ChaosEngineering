@@ -1,6 +1,10 @@
 let SidebarMenu = window["vue-sidebar-menu"].SidebarMenu;
 
 
+let cpuFn = (container) => {return container.CPUPerc};
+let latencyFn = (container) => {return container.latency};
+let chartMetricFn = latencyFn;
+
 $(document).ready(function()
 {
   console.log('On ready...')
@@ -15,9 +19,15 @@ $(document).ready(function()
         this.collapsed = collapsed
       },
       onItemClick (event, item) {
-        console.log('onItemClick')
-        // console.log(event)
-        // console.log(item)
+        console.log(`onItemClick ${JSON.stringify(item)}`);
+        if( item.href==="/#latency" ) chartMetricFn = latencyFn;
+        if( item.href==="/#cpu" ) chartMetricFn = cpuFn;
+
+        vm2.blueChartData = [];
+        vm2.greenChartData = [];
+
+        // vm2.$refs.linechart.renderLineChart();
+
       }
     },  
     data: {
@@ -79,7 +89,7 @@ $(document).ready(function()
           let sum = 0;
           for ( var container of server.stat )
           {
-            sum+=parseFloat(container.latency);
+            sum+=parseFloat(chartMetricFn(container));
           }
           // console.log(sum);
           vm2.blueChartData.push( {x: new Date(), y: sum / 3.0});
@@ -91,7 +101,7 @@ $(document).ready(function()
           let sum = 0;
           for ( var container of server.stat )
           {
-            sum+=parseFloat(container.latency);
+            sum+=parseFloat(chartMetricFn(container));
           }
           // console.log(sum);
 
@@ -119,6 +129,11 @@ const menuValues = [
       title: 'Dashboard',
       icon: 'fa fa-chart-area'
   },
+  {
+    href: '/#latency',
+    title: 'Latency',
+    icon: 'fa fa-tachometer-alt',
+  },  
   {
       href: '/#cpu',
       title: 'CPU Load',

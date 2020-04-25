@@ -51,7 +51,7 @@
   <body>
     <div id="app">
       <div class="bar">
-        <sidebar-menu :menu="menu" :show-one-child="true" :collapsed="collapsed" :hide-toggle="true"/>
+        <sidebar-menu :menu="menu" :show-one-child="true" :collapsed="collapsed" :hide-toggle="true" @item-click="onItemClick"/>
       </div>
 
       <h2 class="title is-5">Blue Control</h2>
@@ -73,7 +73,7 @@
       <br/><br/>
 
       <div class="chart">
-        <h2 class="title is-5">Line Chart</h2>
+        <h2 class="title is-5">Chart</h2>
 
         <section class="section">
           <div class="container">
