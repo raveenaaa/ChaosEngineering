@@ -2,17 +2,11 @@
 
 > Chaos is a ladder.
 
-We will explore basic fault and event injection to understand how a simple service responds to different events. To faciliate this workshop, we will run a service in a single docker container, so we have better ability to control resources.
-
-This workshop will be a bit more exploratory than some of our other workshops, so this will be a good chance to practice using Docker.
+We will explore basic fault and event injection to understand how a simple service responds to different events. This workshop will be a bit more exploratory than some of our other workshops, so this will be a good chance to practice using Docker.
 
 
 
-
-> docker run --rm --name app1 -p 127.0.0.1:3001:80/tcp nginxdemos/hello:plain-text
-
-
-### Setup
+## Setup
 
 We will need to build the Dockerfile to setup up the environment with our chaos tools and scripts.
 
