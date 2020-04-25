@@ -139,7 +139,7 @@ You should see something like this:
 *What have we learned?* Because our round-robin load balancer ignores cpu load, it will continue to route requests to an overloaded instance, who will take much longer in servicing requests. The implication is that we should be mindful of avoiding routing to overloaded instances, which can increase quality of service.
 
 
-### Network traffic
+### Network traffic 🚦
 
 Let's start another experiment, were we mess with the network traffic.
 
@@ -160,7 +160,7 @@ Once you are done, you can reset the connection with:
     /bakerx/chaos_reset.sh
 
 
-### Killing and starting containers
+### Killing and starting containers 😵
 
 Inside the green canary server, you can stop the running containers with `docker stop`.
 Stop the app1 and app2 containers;
@@ -178,7 +178,7 @@ docker run --rm --name app2 -d -p 127.0.0.1:3006:3000/tcp app-server
 # docker run --rm --name app3 -d -p 127.0.0.1:3007:3000/tcp app-server
 ```
 
-### Squeeze Testing
+### Squeeze Testing 🔽
 
 By default a Docker container allocates unlimited cpu and memory. Try limiting the available cpu and memory settings with running the container. You can use these parameters:
 
@@ -191,7 +191,7 @@ Most of these options take a positive integer, followed by a suffix of b, k, m, 
 
 Notice anything interesting?
 
-### Filling disks
+### Filling disks ⛽
 
 1. Inside one of the containers (e.g., using `docker exec -it app3 sh`), add and run the command to fill the disk: `./fill_disk.sh /fill 2G`.
 
