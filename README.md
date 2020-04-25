@@ -95,7 +95,7 @@ Many of the scripts use traffic control, an advanced tool for setting networking
 
 While breaking things are fun, we usually want to do so in a principled manner, so we can learn about how our infrastructure handles failure and discover unexpected results.
 
-### Burning up the CPU of a single docker container.
+### Burning up the CPU of a single docker container. 💥
 
 We will conduct a simple experiment where we will induce a heavy CPU load on container within the green canary server. We will then observe differences in metrics across the control and canary server.
 
@@ -199,7 +199,7 @@ Notice anything interesting?
 
 3. Try to create a file inside another container.
 
-**What surprising fact did you learn?**
+🔴 **What surprising fact did you learn?**
 
 ## Reflection
 
