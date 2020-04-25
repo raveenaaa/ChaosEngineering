@@ -5,6 +5,8 @@ let cpuFn = (container) => {return container.CPUPerc};
 let latencyFn = (container) => {return container.latency};
 let chartMetricFn = latencyFn;
 
+let chartTitle = "Latency (ms)";
+
 $(document).ready(function()
 {
   console.log('On ready...')
@@ -20,13 +22,22 @@ $(document).ready(function()
       },
       onItemClick (event, item) {
         console.log(`onItemClick ${JSON.stringify(item)}`);
-        if( item.href==="/#latency" ) chartMetricFn = latencyFn;
-        if( item.href==="/#cpu" ) chartMetricFn = cpuFn;
 
+        // Set metric selector
+        if( item.href==="/#latency" ) 
+        {
+          chartMetricFn = latencyFn;
+          chartTitle = "Latency (ms)";
+        }
+        if( item.href==="/#cpu" ) 
+        {
+          chartMetricFn = cpuFn;
+          chartTitle = "CPU Load (%)";
+        }
+
+        vm2.chartTitle = chartTitle;
         vm2.blueChartData = [];
         vm2.greenChartData = [];
-
-        // vm2.$refs.linechart.renderLineChart();
 
       }
     },  
@@ -59,6 +70,7 @@ $(document).ready(function()
   let vm2 = new Vue({
     el: '.chart',
     data: {
+      chartTitle: chartTitle,
       blueChartData: [{x: new Date(), y: 0}],
       greenChartData: [{x: new Date(), y: 0}],
     },  
@@ -109,10 +121,6 @@ $(document).ready(function()
         }
       }
 
-      // vm2.greenChartData = greenData;
-      // vm2.blueChartData = blueData;
-
-      //console.log(greenData);
   });
 
 
