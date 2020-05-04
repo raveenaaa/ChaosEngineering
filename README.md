@@ -12,7 +12,7 @@ Pull the image needed for this workshop.
 ```bash
 bakerx pull CSC-DevOps/Images#Spring2020 chaos
 ```
-![](/images/up.png)
+![](/img/up.png)
 Clone this repository.
 
 ```bash
