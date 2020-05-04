@@ -12,8 +12,7 @@ Pull the image needed for this workshop.
 ```bash
 bakerx pull CSC-DevOps/Images#Spring2020 chaos
 ```
-![](/img/up.png)
-Clone this repository.
+Clone the repository.
 
 ```bash
 git clone https://github.com/CSC-DevOps/Chaos
@@ -35,6 +34,7 @@ Inside the `Chaos\chap` directory, start the instances:
 cd chap
 node index.js up
 ```
+![](/img/up.png)
 
 After the instances intialize, start the dashboard service.
 
@@ -44,25 +44,6 @@ node index.js serve
 
 You should see a dashboard available on your host machine http://localhost:8080/
 
-## Workshop
-
-### Control and Canary server.
-
-Your control server is running a service with several endpoints, including:
-
-* http://192.168.44.102:3080/ --- displays a simple hello world message.
-* http://192.168.44.102:3080/stackless --- computes a medium workload.
-* http://192.168.44.102:3080/work --- computes a heavy workload.
-
-Inside the server, three docker containers provide simple node express servers that service these requests.
-A reverse-proxy will route uses a simple round robin algorithm to load balance the requests between the containers.
-
-One more endpoint exists for the dashboard:
-
-* http://192.168.44.102:3080/health --- returns basic metrics, including memory, cpu, and latency of services.
-
-Finally, the canary server runs the same exact services, but at http://192.168.66.108/
-
 ### Dashboard
 
 ![dashboard](img/dashboard.png)
@@ -70,12 +51,6 @@ Finally, the canary server runs the same exact services, but at http://192.168.6
 The dashboard displays your running infrastructure.  The container's overall health is visualized by a small colored square. 
 
 A line chart displays statistics gathered from the `/health` endpoint. A sidebar menu displays some options for updating the line chart. By clicking the "CPU Load" menu item, you will see the CPU load be compared between the two servers. By clicking the "Latency" menu item, you will see the Latency as calculated by the average time for a request to be serviced between successive health check calls.
-
-You can visualize the effects of traffic on the metrics by visiting the servers, either using a load script, curl command, or siege. For example, you can see a brief spike on the control server by running:
-
-    siege -b -t30s http://192.168.44.102:3080/stackless
-
-The dashboard can fill out with events once left running long enough. By reloading the page or changing metrics, it will reset.
 
 ### Tools of Chaos
 
@@ -90,15 +65,9 @@ Many of the scripts use traffic control, an advanced tool for setting networking
 
     tc qdisc add dev enp0s8 root netem corrupt 50%
 
-## Experimentation
-
-While breaking things are fun, we usually want to do so in a principled manner, so we can learn about how our infrastructure handles failure and discover unexpected results.
-
 ### Burning up the CPU of a single docker container. 💥
 
 We will conduct a simple experiment where we will induce a heavy CPU load on container within the green canary server. We will then observe differences in metrics across the control and canary server.
-
-##### Adding chaos
 
 Enter the green canary server (`bakerx ssh greencanary`). Then, let's open up a shell within one of the docker containers:
 
@@ -131,11 +100,10 @@ Now, induce load on the control server.
 
 You should see something like this:
 
-![cpu-burn](img/cpu-burn.png)
+![cpu-burn](img/cpu_burn.png)
 
-*What did we see*? We see a large increase in latency in green canary server, meaning client requests are taking much longer (and may be timing out).
-
-*What have we learned?* Because our round-robin load balancer ignores cpu load, it will continue to route requests to an overloaded instance, who will take much longer in servicing requests. The implication is that we should be mindful of avoiding routing to overloaded instances, which can increase quality of service.
+We see a large increase in latency in green canary server, meaning client requests are taking much longer (and may be timing out).
+This is because our round-robin load balancer ignores cpu load, it will continue to route requests to an overloaded instance, who will take much longer in servicing requests. The implication is that we should be mindful of avoiding routing to overloaded instances, which can increase quality of service.
 
 
 ### Network traffic 🚦
