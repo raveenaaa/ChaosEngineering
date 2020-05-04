@@ -108,19 +108,23 @@ This is because our round-robin load balancer ignores cpu load, it will continue
 
 ### Network traffic 🚦
 
-Let's start another experiment, were we mess with the network traffic.
-
 Inside our green canary server (`bakerx ssh greencanary`), run the following:
 
     /bakerx/chaos_network_corruption.sh
 
 Alternatively, you can also directly run:
 
-    tc qdisc add dev enp0s8 root netem corrupt 50%
+   tc qdisc add dev enp0s8 root netem corrupt 50%
 
-Task: Try inducing load on the green canary server, now. What does it look like? You might see something like this:
+Task: Try inducing load on the green canary server using:
 
-![drop-packets](img/drop-packets.png)
+`siege -b -t30s http://192.168.44.102:3080/stackless`
+
+##### Observations:
+
+![network-traffic](img/network-packets.png)
+
+We see spikes in the latency of the green canary. Since our chaos tool corrupts 50% of the network packets, the load to the green canary is effectively 50% of the original. Hence, we see the latency drop since the load itself has dropped
 
 Once you are done, you can reset the connection with:
 
@@ -136,7 +140,11 @@ Stop the app1 and app2 containers;
 docker stop app1 app2
 ```
 
-Conduct a brief experiment where you compare the performance difference between the control server (with three containers) and the green canary server with 1 container.
+Generate load to the containers using `siege`
+
+##### Observations:
+
+![network-traffic](img/kill-container.png)
 
 You can restore the containers again by starting them up with the following commands:
 ```
