@@ -88,7 +88,7 @@ Run it.
 ./chaos_cpu.sh
 ```
 
-#### Observations
+### Observations
 
 Induce load on the green canary server.
 
@@ -120,7 +120,7 @@ Task: Try inducing load on the green canary server using:
 
 `siege -b -t30s http://192.168.44.102:3080/stackless`
 
-#### Observations:
+### Observations:
 
 ![network-traffic](img/network-packets.png)
 
@@ -164,7 +164,7 @@ By default a Docker container allocates unlimited cpu and memory. Try limiting t
 -m 100k
 ```
 
-#### Observations:
+### Observations:
 
 latency squeeze testing:
 ![network-traffic](img/squeeze-testing.png)
@@ -175,16 +175,20 @@ Original latency graph:
 
 We observed no significant difference in the latencies of the canary with the docker containers with lesser memory and cpus vs the original containers
 
-### Filling disks ⛽
+## Filling disks ⛽
 
 1. Inside one of the containers (e.g., using `docker exec -it app3 sh`), add and run the command to fill the disk: `./fill_disk.sh /fill 2G`.
 
-2. Kill the container and start it again. What happened?
+2. Kill the container and start it again. What happened
+
+![network-traffic](img/fill-disk1.png)
 
 3. Try to create a file inside another container.
+Yes, we are able to create a new container
 
 🔴 **What surprising fact did you learn?**
+We are able to create a file in another container, since the memory is shared between docker containers.
 
 ## Reflection
 
-How could you extend this workshop to collect more measures and devise an automated experiment to understand which event/failure causes the most problems?
+
