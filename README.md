@@ -5,7 +5,7 @@
 We will explore basic fault and event injection to understand how a simple service responds to different events. This workshop will be a bit more exploratory than some of our other workshops, so this will be a good chance to practice using Docker.
 
 
-## Setup
+### Setup
 
 Pull the image needed for this workshop.
 
@@ -52,7 +52,7 @@ The dashboard displays your running infrastructure.  The container's overall hea
 
 A line chart displays statistics gathered from the `/health` endpoint. A sidebar menu displays some options for updating the line chart. By clicking the "CPU Load" menu item, you will see the CPU load be compared between the two servers. By clicking the "Latency" menu item, you will see the Latency as calculated by the average time for a request to be serviced between successive health check calls.
 
-### Tools of Chaos
+## Tools of Chaos
 
 Inside the /chaos directory, we will find several scripts that will in general cause mayhem, including:
 
@@ -65,7 +65,7 @@ Many of the scripts use traffic control, an advanced tool for setting networking
 
     tc qdisc add dev enp0s8 root netem corrupt 50%
 
-### Burning up the CPU of a single docker container. 💥
+## Burning up the CPU of a single docker container. 💥
 
 We will conduct a simple experiment where we will induce a heavy CPU load on container within the green canary server. We will then observe differences in metrics across the control and canary server.
 
@@ -88,7 +88,7 @@ Run it.
 ./chaos_cpu.sh
 ```
 
-##### Observations
+#### Observations
 
 Induce load on the green canary server.
 
@@ -106,7 +106,7 @@ We see a large increase in latency in green canary server, meaning client reques
 This is because our round-robin load balancer ignores cpu load, it will continue to route requests to an overloaded instance, who will take much longer in servicing requests. The implication is that we should be mindful of avoiding routing to overloaded instances, which can increase quality of service.
 
 
-### Network traffic 🚦
+## Network traffic 🚦
 
 Inside our green canary server (`bakerx ssh greencanary`), run the following:
 
@@ -120,7 +120,7 @@ Task: Try inducing load on the green canary server using:
 
 `siege -b -t30s http://192.168.44.102:3080/stackless`
 
-##### Observations:
+#### Observations:
 
 ![network-traffic](img/network-packets.png)
 
@@ -131,7 +131,7 @@ Once you are done, you can reset the connection with:
     /bakerx/chaos_reset.sh
 
 
-### Killing and starting containers 😵
+## Killing and starting containers 😵
 
 Inside the green canary server, you can stop the running containers with `docker stop`.
 Stop the app1 and app2 containers;
@@ -142,7 +142,7 @@ docker stop app1 app2
 
 Generate load to the containers using `siege`
 
-##### Observations:
+### Observations:
 
 ![network-traffic](img/kill-container.png)
 
@@ -155,7 +155,7 @@ docker run --rm --name app2 -d -p 127.0.0.1:3006:3000/tcp app-server
 # docker run --rm --name app3 -d -p 127.0.0.1:3007:3000/tcp app-server
 ```
 
-### Squeeze Testing 🔽
+## Squeeze Testing 🔽
 
 By default a Docker container allocates unlimited cpu and memory. Try limiting the available cpu and memory settings with running the container. You can use these parameters:
 
@@ -164,10 +164,11 @@ By default a Docker container allocates unlimited cpu and memory. Try limiting t
 -m 100k
 ```
 
-##### Observations:
+#### Observations:
 
-![network-traffic](img/squeeze-testing.png)
+latency-squeeze testing![network-traffic](img/squeeze-testing.png)
 
+We observed no significant difference in the latencies of the canary with the docker containers with lesser memory and cpus vs the original containers
 
 ### Filling disks ⛽
 
