@@ -191,4 +191,13 @@ We are able to create a file in another container, since the memory is shared be
 
 ## Reflection
 
+How could you extend this workshop to collect more measures and devise an automated experiment to understand which event/failure causes the most problems?
 
+We can use the tools of chaos such as 
+* Burning up the CPU.
+* Filling up the disk.
+* Dropping random packets.
+* Killing processes/containers.
+
+to generate randomness in our application. Then we can collect health metrics associated with memory, cpu, latency associated with the blue and the green canaries. Then we can analyse these metrics using the Mann-Withney-Utest of signicance ass `LOW`, `HIGH`, and `PASS`. 
+If the difference is significantly `HIGH` then we can say that our application is very vulnerable to that type of attack and take appropriate measures.
