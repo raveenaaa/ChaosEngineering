@@ -4,7 +4,6 @@
 
 We will explore basic fault and event injection to understand how a simple service responds to different events. This workshop will be a bit more exploratory than some of our other workshops, so this will be a good chance to practice using Docker.
 
-![cpu-burn](img/cpu-burn.png)
 
 ## Setup
 
@@ -13,7 +12,7 @@ Pull the image needed for this workshop.
 ```bash
 bakerx pull CSC-DevOps/Images#Spring2020 chaos
 ```
-
+![](/img/up.png)
 Clone this repository.
 
 ```bash
