@@ -166,7 +166,12 @@ By default a Docker container allocates unlimited cpu and memory. Try limiting t
 
 #### Observations:
 
-latency-squeeze testing![network-traffic](img/squeeze-testing.png)
+latency squeeze testing:
+![network-traffic](img/squeeze-testing.png)
+
+Original latency graph:
+![network-traffic](img/original.png)
+
 
 We observed no significant difference in the latencies of the canary with the docker containers with lesser memory and cpus vs the original containers
 
