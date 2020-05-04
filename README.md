@@ -146,6 +146,8 @@ Generate load to the containers using `siege`
 
 ![network-traffic](img/kill-container.png)
 
+The latency of the green canary is surprisingly lesser than that of the blue baseline. We believe that this is because there is no overhead associated with routing the traffic between the different containers of the green canary.
+
 You can restore the containers again by starting them up with the following commands:
 ```
 docker run --rm --name app1 -d -p 127.0.0.1:3005:3000/tcp app-server
@@ -158,13 +160,14 @@ docker run --rm --name app2 -d -p 127.0.0.1:3006:3000/tcp app-server
 By default a Docker container allocates unlimited cpu and memory. Try limiting the available cpu and memory settings with running the container. You can use these parameters:
 
 ```
---cpus=".5"
--m 8m
+--cpus=".05"
+-m 100k
 ```
 
-Most of these options take a positive integer, followed by a suffix of b, k, m, g, to indicate bytes, kilobytes, megabytes, or gigabytes.
+##### Observations:
 
-Notice anything interesting?
+![network-traffic](img/squeeze-testing.png)
+
 
 ### Filling disks ⛽
 
